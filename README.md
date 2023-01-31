@@ -10,7 +10,7 @@ It uses:
 
 * [Java](https://www.java.com/) as the programming language
 * [Playwright](https://playwright.dev/java) for browser automation
-* [Google Chrome](https://www.google.com/chrome/downloads/) as the local browser for testing
+* [Chromium](https://www.chromium.org/chromium-projects/) as the local browser for testing
 * [Apache Maven](https://maven.apache.org/index.html) for dependency management
 * [JUnit 5](https://junit.org/junit5/) as the core test framework
 * [Applitools Eyes](https://applitools.com/platform/eyes/) for visual testing
@@ -22,8 +22,6 @@ To run this example project, you'll need:
 2. The [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/downloads/), version 8 or higher.
 3. A good Java editor, such as [JetBrains IntelliJ IDEA](https://www.jetbrains.com/idea/).
 4. [Apache Maven](https://maven.apache.org/download.cgi) (typically bundled with IDEs).
-5. An up-to-date version of [Google Chrome](https://www.google.com/chrome/downloads/).
-6. A corresponding version of [ChromeDriver](https://chromedriver.chromium.org/downloads).
 
 The main test case is [`AcmeBankTests.java`](src/test/java/com/applitools/example/AcmeBankTests.java).
 
