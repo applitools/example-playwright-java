@@ -6,7 +6,7 @@ import com.applitools.eyes.TestResultsSummary;
 import com.applitools.eyes.config.Configuration;
 import com.applitools.eyes.playwright.Eyes;
 import com.applitools.eyes.playwright.fluent.Target;
-import com.applitools.eyes.playwright.visualgrid.BrowserType;
+import com.applitools.eyes.visualgrid.BrowserType;
 import com.applitools.eyes.visualgrid.model.DeviceName;
 import com.applitools.eyes.visualgrid.model.ScreenOrientation;
 import com.applitools.eyes.visualgrid.services.RunnerOptions;
