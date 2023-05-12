@@ -30,10 +30,10 @@ public class AcmeBankTests {
     // These could be set by environment variables or other input mechanisms.
     // They are hard-coded here to keep the example project simple.
     private final static boolean USE_ULTRAFAST_GRID = true;
-    private final static boolean HEADLESS = false;
 
     // Test control inputs to read once and share for all tests
     private static String applitoolsApiKey;
+    private static boolean headless;
 
     // Applitools objects to share for all tests
     private static BatchInfo batch;
@@ -55,6 +55,11 @@ public class AcmeBankTests {
 
         // Read the Applitools API key from an environment variable.
         applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");
+
+        // Read the headless mode setting from an environment variable.
+        // Use headless mode for Continuous Integration (CI) execution.
+        // Use headed mode for local development.
+        headless = Boolean.parseBoolean(System.getenv().getOrDefault("HEADLESS", "true"));
 
         if (USE_ULTRAFAST_GRID) {
             // Create the runner for the Ultrafast Grid.
@@ -101,7 +106,7 @@ public class AcmeBankTests {
 
         // Start Playwright and launch the browser.
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new com.microsoft.playwright.BrowserType.LaunchOptions().setHeadless(HEADLESS));
+        browser = playwright.chromium().launch(new com.microsoft.playwright.BrowserType.LaunchOptions().setHeadless(headless));
     }
 
     @BeforeEach
