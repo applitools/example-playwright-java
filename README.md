@@ -1,10 +1,9 @@
-# Applitools Example: Playwright Java JUnit with the Ultrafast Grid
+# Applitools Example: Playwright in Java with JUnit
 
 This is the example project for the [Playwright Java tutorial](https://applitools.com/tutorials/quickstart/web/playwright/java).
 It shows how to start automating visual tests
 with [Applitools Eyes](https://applitools.com/platform/eyes/)
-and the [Ultrafast Grid](https://applitools.com/platform/ultrafast-grid/)
-using [Playwright](https://playwright.dev/java) in Java.
+and [Playwright](https://playwright.dev/java) in Java.
 
 It uses:
 
@@ -14,6 +13,9 @@ It uses:
 * [Apache Maven](https://maven.apache.org/index.html) for dependency management
 * [JUnit 5](https://junit.org/junit5/) as the core test framework
 * [Applitools Eyes](https://applitools.com/platform/eyes/) for visual testing
+
+It can also run tests with:
+
 * [Applitools Ultrafast Grid](https://applitools.com/platform/ultrafast-grid/) for cross-browser execution
 
 To run this example project, you'll need:
@@ -24,6 +26,8 @@ To run this example project, you'll need:
 4. [Apache Maven](https://maven.apache.org/download.cgi) (typically bundled with IDEs).
 
 The main test case is [`AcmeBankTests.java`](src/test/java/com/applitools/example/AcmeBankTests.java).
+By default, the project will run tests with Ultrafast Grid.
+You can change these settings in the test class.
 
 To execute tests, set the `APPLITOOLS_API_KEY` environment variable
 to your [account's API key](https://applitools.com/tutorials/guides/getting-started/registering-an-account),

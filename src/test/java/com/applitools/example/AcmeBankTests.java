@@ -1,9 +1,11 @@
 package com.applitools.example;
 
 import com.applitools.eyes.BatchInfo;
+import com.applitools.eyes.EyesRunner;
 import com.applitools.eyes.RectangleSize;
 import com.applitools.eyes.TestResultsSummary;
 import com.applitools.eyes.config.Configuration;
+import com.applitools.eyes.playwright.ClassicRunner;
 import com.applitools.eyes.playwright.Eyes;
 import com.applitools.eyes.playwright.fluent.Target;
 import com.applitools.eyes.visualgrid.BrowserType;
@@ -21,17 +23,22 @@ import java.time.Duration;
 
 public class AcmeBankTests {
     // This JUnit test case class contains everything needed to run a full visual test against the ACME bank site.
-    // It runs the test once locally,
-    // and then it performs cross-browser testing against multiple unique browsers in Applitools Ultrafast Grid.
+    // It runs the test once locally.
+    // If you use the Ultrafast Grid, then it performs cross-browser testing against multiple unique browsers.
+
+    // Runner Settings.
+    // These could be set by environment variables or other input mechanisms.
+    // They are hard-coded here to keep the example project simple.
+    private final static boolean USE_ULTRAFAST_GRID = true;
+    private final static boolean HEADLESS = false;
 
     // Test control inputs to read once and share for all tests
     private static String applitoolsApiKey;
-    private static boolean headless;
 
     // Applitools objects to share for all tests
     private static BatchInfo batch;
     private static Configuration config;
-    private static VisualGridRunner runner;
+    private static EyesRunner runner;
 
     // Test-specific objects
     private static Playwright playwright;
@@ -42,27 +49,29 @@ public class AcmeBankTests {
 
     @BeforeAll
     public static void setUpConfigAndRunner() {
-        // This method sets up the configuration for running visual tests in the Ultrafast Grid.
+        // This method sets up the configuration for running visual tests.
         // The configuration is shared by all tests in a test suite, so it belongs in a `BeforeAll` method.
         // If you have more than one test class, then you should abstract this configuration to avoid duplication.
 
         // Read the Applitools API key from an environment variable.
         applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");
 
-        // Read the headless mode setting from an environment variable.
-        // Use headless mode for Continuous Integration (CI) execution.
-        // Use headed mode for local development.
-        headless = Boolean.parseBoolean(System.getenv().getOrDefault("HEADLESS", "true"));
-
-        // Create the runner for the Ultrafast Grid.
-        // Concurrency refers to the number of visual checkpoints Applitools will perform in parallel.
-        // Warning: If you have a free account, then concurrency will be limited to 1.
-        runner = new VisualGridRunner(new RunnerOptions().testConcurrency(5));
+        if (USE_ULTRAFAST_GRID) {
+            // Create the runner for the Ultrafast Grid.
+            // Concurrency refers to the number of visual checkpoints Applitools will perform in parallel.
+            // Warning: If you have a free account, then concurrency will be limited to 1.
+            runner = new VisualGridRunner(new RunnerOptions().testConcurrency(5));
+        }
+        else {
+            // Create the Classic runner.
+            runner = new ClassicRunner();
+        }
 
         // Create a new batch for tests.
         // A batch is the collection of visual checkpoints for a test suite.
         // Batches are displayed in the Eyes Test Manager, so use meaningful names.
-        batch = new BatchInfo("Example: Playwright Java JUnit with the Ultrafast Grid");
+        String runnerName = (USE_ULTRAFAST_GRID) ? "Ultrafast Grid" : "Classic runner";
+        batch = new BatchInfo("Example: Playwright Java JUnit with the " + runnerName);
 
         // Create a configuration for Applitools Eyes.
         config = new Configuration();
@@ -75,20 +84,24 @@ public class AcmeBankTests {
         // Set the batch for the config.
         config.setBatch(batch);
 
-        // Add 3 desktop browsers with different viewports for cross-browser testing in the Ultrafast Grid.
-        // Other browsers are also available, like Edge and IE.
-        config.addBrowser(800, 600, BrowserType.CHROME);
-        config.addBrowser(1600, 1200, BrowserType.FIREFOX);
-        config.addBrowser(1024, 768, BrowserType.SAFARI);
+        // If running tests on the Ultrafast Grid, configure browsers.
+        if (USE_ULTRAFAST_GRID) {
 
-        // Add 2 mobile emulation devices with different orientations for cross-browser testing in the Ultrafast Grid.
-        // Other mobile devices are available, including iOS.
-        config.addDeviceEmulation(DeviceName.Pixel_2, ScreenOrientation.PORTRAIT);
-        config.addDeviceEmulation(DeviceName.Nexus_10, ScreenOrientation.LANDSCAPE);
+            // Add 3 desktop browsers with different viewports for cross-browser testing in the Ultrafast Grid.
+            // Other browsers are also available, like Edge and IE.
+            config.addBrowser(800, 600, BrowserType.CHROME);
+            config.addBrowser(1600, 1200, BrowserType.FIREFOX);
+            config.addBrowser(1024, 768, BrowserType.SAFARI);
+
+            // Add 2 mobile emulation devices with different orientations for cross-browser testing in the Ultrafast Grid.
+            // Other mobile devices are available, including iOS.
+            config.addDeviceEmulation(DeviceName.Pixel_2, ScreenOrientation.PORTRAIT);
+            config.addDeviceEmulation(DeviceName.Nexus_10, ScreenOrientation.LANDSCAPE);
+        }
 
         // Start Playwright and launch the browser.
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new com.microsoft.playwright.BrowserType.LaunchOptions().setHeadless(headless));
+        browser = playwright.chromium().launch(new com.microsoft.playwright.BrowserType.LaunchOptions().setHeadless(HEADLESS));
     }
 
     @BeforeEach
@@ -103,7 +116,7 @@ public class AcmeBankTests {
         // page = browser.newPage();
         page = context.newPage();
 
-        // Create the Applitools Eyes object connected to the VisualGridRunner and set its configuration.
+        // Create the Applitools Eyes object connected to the runner and set its configuration.
         eyes = new Eyes(runner);
         eyes.setConfiguration(config);
 
