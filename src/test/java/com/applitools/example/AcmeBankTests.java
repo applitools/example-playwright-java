@@ -157,14 +157,14 @@ public class AcmeBankTests {
         // Traditional assertions that scrape the page for text values are not needed here.
 
         // Load the login page.
-        page.navigate("https://demo.applitools.com");
+        page.navigate("https://sandbox.applitools.com/bank");
 
         // Verify the full login page loaded correctly.
         eyes.check(Target.window().fully().withName("Login page"));
 
         // Perform login.
-        page.locator("#username").fill("andy");
-        page.locator("#password").fill("i<3pandas");
+        page.locator("#username").fill("Chris");
+        page.locator("#password").fill("CorrectHorseBatteryStaple");
         page.locator("#log-in").click();
 
         // Verify the full main page loaded correctly.
