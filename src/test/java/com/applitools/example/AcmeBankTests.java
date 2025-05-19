@@ -19,8 +19,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import org.junit.jupiter.api.*;
 
-import java.time.Duration;
-
 public class AcmeBankTests {
     // This JUnit test case class contains everything needed to run a full visual test against the ACME bank site.
     // It runs the test once locally.
